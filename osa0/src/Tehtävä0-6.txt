@@ -1,0 +1,14 @@
+Käyttäjä->Selain:
+note left of Selain
+Käyttäjä kirjoittaa muistiinpanon ja klikkaa 'Talleta'-nappia
+end note
+note left of Selain
+Sivun JavaScript lisää muistiinpanon lokaaliin
+listaan, päivittää sivun sekä lähettää
+uuden muistiinpanon palvelimelle
+end note
+Selain->Palvelin: POST fullstack-exampleapp.herokuapp.com/new_note_spa
+note left of Palvelin
+Talletetaan muistiinpano 'kantaan'
+end note
+Palvelin->Selain: Status 201, 'note created'
