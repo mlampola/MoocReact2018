@@ -9,11 +9,20 @@ const Otsikko = (props) => {
 
 }
 
+const Osa = (props) => {
+    console.log("Osa", props)
+    return (
+    <p key={props.kurssi.key}>{props.kurssi.osa} {props.kurssi.tehtavia}</p>
+    )
+}
+
 const Sisalto = (props) => {
     console.log("Sisaltö", props)
     return (
         <div>
-        {props.osat.map(osa => <p key={osa.key}>{osa.osa} {osa.tehtavia}</p>)}
+            <Osa kurssi={props.osat[0]} />
+            <Osa kurssi={props.osat[1]} />
+            <Osa kurssi={props.osat[2]} />
         </div>)
  }
 
