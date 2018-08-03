@@ -9,7 +9,12 @@ const Statistic = ({ name, value }) => (
     <div>{name} {value}</div>
 )
 
-const Statistics = ({ hyva, neutraali, huono }) => (
+const Statistics = ({ hyva, neutraali, huono }) => {
+    if (hyva === 0 && neutraali === 0 && huono === 0) {
+        return(<p>ei yhtään palautetta annettu</p>)
+    }
+
+    return (
     <ul style={{listStyleType: 'none', padding: 0}}>
         <li><Statistic name="hyvä" value={hyva} /></li>
         <li><Statistic name="neutraali" value={neutraali} /></li>
@@ -18,6 +23,7 @@ const Statistics = ({ hyva, neutraali, huono }) => (
         <li><Statistic name="positiivisia" value={(hyva / (huono + neutraali + hyva) * 100).toFixed(1).concat(" %")} /></li>
     </ul>
     )
+}
 
 class App extends React.Component {
     constructor(props) {
