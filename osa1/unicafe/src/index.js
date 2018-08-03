@@ -1,6 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+const Button = ({ handleClick, label }) => (
+    <button onClick={handleClick}>{label}</button>
+)
+
+const Statistic = ({ name, value }) => (
+    <div>{name} {value}</div>
+)
+
+const Statistics = ({ hyva, neutraali, huono }) => (
+    <ul style={{listStyleType: 'none', padding: 0}}>
+        <li><Statistic name="hyvä" value={hyva} /></li>
+        <li><Statistic name="neutraali" value={neutraali} /></li>
+        <li><Statistic name="huono" value={huono} /></li>
+        <li><Statistic name="keskiarvo" value={((hyva - huono) / (huono + neutraali + hyva)).toFixed(1)} /></li>
+        <li><Statistic name="positiivisia" value={(hyva / (huono + neutraali + hyva) * 100).toFixed(1).concat(" %")} /></li>
+    </ul>
+    )
+
 class App extends React.Component {
     constructor(props) {
         super(props)
@@ -34,21 +52,16 @@ class App extends React.Component {
             <div>
                 <div>
                     <h1>anna palautetta</h1>
-                    <button onClick={this.klikHyva}>hyva</button>
-                    <button onClick={this.klikNeutraali}>neutraali</button>
-                    <button onClick={this.klikHuono}>huono</button>
+                    <Button handleClick={this.klikHyva} label="hyva" />
+                    <Button handleClick={this.klikNeutraali} label="neutraali" />
+                    <Button handleClick={this.klikHuono} label="huono" />
                     <h1>statistiikka</h1>
-                    <p>hyvä {this.state.hyva}
-                    <br/>neutraali {this.state.neutraali}
-                    <br/>huono {this.state.huono}
-                    <br/>keskiarvo {((this.state.hyva - this.state.huono) / (this.state.huono + this.state.neutraali + this.state.hyva)).toFixed(1)}
-                    <br/>positiivisia {(this.state.hyva / (this.state.huono + this.state.neutraali + this.state.hyva) * 100).toFixed(1)} % </p>
+                    <Statistics hyva={this.state.hyva} neutraali={this.state.neutraali} huono={this.state.huono} />
                 </div>
             </div>
         )
     }
 }
-
 
 ReactDOM.render(
     <App />,
