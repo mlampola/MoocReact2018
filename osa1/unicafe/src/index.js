@@ -35,21 +35,9 @@ class App extends React.Component {
         }
     }
 
-    klikHyva = () => {
+    klik = (statistic) => () => {
         this.setState({
-            hyva: this.state.hyva + 1
-        })
-    }
-
-    klikNeutraali = () => {
-        this.setState({
-            neutraali: this.state.neutraali + 1
-        })
-    }
-
-    klikHuono = () => {
-        this.setState({
-            huono: this.state.huono + 1
+            [statistic]: this.state[statistic] + 1
         })
     }
 
@@ -58,9 +46,9 @@ class App extends React.Component {
             <div>
                 <div>
                     <h1>anna palautetta</h1>
-                    <Button handleClick={this.klikHyva} label="hyva" />
-                    <Button handleClick={this.klikNeutraali} label="neutraali" />
-                    <Button handleClick={this.klikHuono} label="huono" />
+                    <Button handleClick={this.klik("hyva")} label="hyvä" />
+                    <Button handleClick={this.klik("neutraali")} label="neutraali" />
+                    <Button handleClick={this.klik("huono")} label="huono" />
                     <h1>statistiikka</h1>
                     <Statistics hyva={this.state.hyva} neutraali={this.state.neutraali} huono={this.state.huono} />
                 </div>
