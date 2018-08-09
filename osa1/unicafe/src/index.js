@@ -6,22 +6,24 @@ const Button = ({ handleClick, label }) => (
 )
 
 const Statistic = ({ name, value }) => (
-    <div>{name} {value}</div>
+    <tr><td>{name}</td><td>{value}</td></tr>
 )
 
 const Statistics = ({ hyva, neutraali, huono }) => {
     if (hyva === 0 && neutraali === 0 && huono === 0) {
-        return(<p>ei yhtään palautetta annettu</p>)
+        return (<p>ei yhtään palautetta annettu</p>)
     }
 
     return (
-    <ul style={{listStyleType: 'none', padding: 0}}>
-        <li><Statistic name="hyvä" value={hyva} /></li>
-        <li><Statistic name="neutraali" value={neutraali} /></li>
-        <li><Statistic name="huono" value={huono} /></li>
-        <li><Statistic name="keskiarvo" value={((hyva - huono) / (huono + neutraali + hyva)).toFixed(1)} /></li>
-        <li><Statistic name="positiivisia" value={(hyva / (huono + neutraali + hyva) * 100).toFixed(1).concat(" %")} /></li>
-    </ul>
+        <table>
+            <tbody>
+                <Statistic name="hyvä" value={hyva} />
+                <Statistic name="neutraali" value={neutraali} />
+                <Statistic name="huono" value={huono} />
+                <Statistic name="keskiarvo" value={((hyva - huono) / (huono + neutraali + hyva)).toFixed(1)} />
+                <Statistic name="positiivisia" value={(hyva / (huono + neutraali + hyva) * 100).toFixed(1).concat(" %")} />
+            </tbody>
+        </table>
     )
 }
 
