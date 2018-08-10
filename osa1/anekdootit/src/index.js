@@ -5,26 +5,40 @@ class App extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            selected: 0
+            selected: 0,
+            votes: [0, 0, 0, 0, 0, 0]
         }
     }
 
-    handleClick = (event) =>{
+    handleNext = (event) => {
         const index = Math.floor(Math.random() * this.props.anecdotes.length)
         this.setState({
-            selected: index
+            selected: index,
         })
-        console.log("Index: ", this.state.selected, "/", this.props.anecdotes.length)
+        console.log("Anecdote: ", index)
     }
 
-     render() {
+    handleVote = (event) => {
+        const kopio = [...this.state.votes]
+        kopio[this.state.selected] += 1
+        this.setState({
+            votes: kopio,
+        })
+        console.log("Votes[", this.state.selected, "] = ", kopio[this.state.selected])
+    }
+
+    render() {
         return (
             <div>
                 <p>
-                {this.props.anecdotes[this.state.selected]}
+                    {this.props.anecdotes[this.state.selected]}
                 </p>
                 <p>
-                <button onClick={this.handleClick}>Seuraava anekdootti</button>
+                    has {this.state.votes[this.state.selected]} votes
+                </p>
+                <p>
+                    <button onClick={this.handleVote}>vote</button>
+                    <button onClick={this.handleNext}>next anecdote</button>
                 </p>
             </div>
         )
