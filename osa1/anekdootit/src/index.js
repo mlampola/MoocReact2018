@@ -6,6 +6,7 @@ class App extends React.Component {
         super(props)
         this.state = {
             selected: 0,
+            winner: 0,
             votes: [0, 0, 0, 0, 0, 0]
         }
     }
@@ -13,18 +14,20 @@ class App extends React.Component {
     handleNext = (event) => {
         const index = Math.floor(Math.random() * this.props.anecdotes.length)
         this.setState({
-            selected: index,
+            selected: index
         })
         console.log("Anecdote: ", index)
     }
 
     handleVote = (event) => {
-        const kopio = [...this.state.votes]
-        kopio[this.state.selected] += 1
+        const votes = [...this.state.votes]
+        votes[this.state.selected] += 1
+        const winner = votes[this.state.selected] > votes[this.state.winner] ? this.state.selected : this.state.winner
         this.setState({
-            votes: kopio,
+            votes: votes,
+            winner: winner
         })
-        console.log("Votes[", this.state.selected, "] = ", kopio[this.state.selected])
+        console.log("Votes[", this.state.selected, "] = ", votes[this.state.selected], ", winner = ", winner)
     }
 
     render() {
@@ -39,6 +42,13 @@ class App extends React.Component {
                 <p>
                     <button onClick={this.handleVote}>vote</button>
                     <button onClick={this.handleNext}>next anecdote</button>
+                </p>
+                <h3>anecdote with most votes:</h3>
+                <p>
+                    {this.props.anecdotes[this.state.winner]}
+                </p>
+                <p>
+                    has {this.state.votes[this.state.winner]} votes
                 </p>
             </div>
         )
