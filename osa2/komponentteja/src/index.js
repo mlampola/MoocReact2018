@@ -19,6 +19,15 @@ const Kurssi = (props) => {
     )
 }
 
+const Yhteensa = (props) => {
+    return (
+        <p>Yhteensä {
+            props.kurssi.osat.map(osa => osa.tehtavia)
+                .reduce((sum, value) => sum + value)
+        } tehtävää</p>
+    )
+}
+
 const App = () => {
     const kurssi = {
         nimi: 'Half Stack -sovelluskehitys',
@@ -41,7 +50,10 @@ const App = () => {
         ]
     }
     return (
+        <div>
         <Kurssi kurssi={kurssi} />
+        <Yhteensa kurssi={kurssi} />
+        </div>
     )
 }
 
