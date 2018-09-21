@@ -15,12 +15,19 @@ class App extends React.Component {
         event.preventDefault()
         console.log('nappia painettu')
 
-        const persons = this.state.persons.concat({ name: this.state.newName })
+        if (!this.state.persons.find(person => person.name ===  this.state.newName)) {
+            const persons = this.state.persons.concat({ name: this.state.newName })
 
-        this.setState({
-            persons: persons,
-            newName: ''
-        })
+            this.setState({
+                persons: persons,
+                newName: ''
+            })
+        } else {
+            console.log('henkilö ' + this.state.newName + ' on jo olemassa')
+            this.setState({
+                 newName: ''
+            })
+       }
     }
 
     handleNoteChange = (event) => {
@@ -42,7 +49,7 @@ class App extends React.Component {
                 </form>
                 <h2>Numerot</h2>
                 {this.state.persons.map(person => <div key={person.name}> {person.name} </div>)}
-      </div>
+            </div>
         )
     }
 }
