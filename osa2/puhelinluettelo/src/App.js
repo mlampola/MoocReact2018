@@ -1,4 +1,7 @@
 import React from 'react';
+import FilterForm from './components/FilterForm'
+import PersonForm from './components/PersonForm'
+import Catalog from './components/Catalog'
 
 class App extends React.Component {
     constructor(props) {
@@ -56,32 +59,18 @@ class App extends React.Component {
 
     render() {
         const personsToShow =
-        this.state.filter === '' ?
-          this.state.persons :
-          this.state.persons.filter(person => person.name.toLowerCase().includes(this.state.filter.toLowerCase()))
+            this.state.filter === '' ?
+                this.state.persons :
+                this.state.persons.filter(person => person.name.toLowerCase().includes(this.state.filter.toLowerCase()))
 
-          return (
+        return (
             <div>
                 <h2>Puhelinluettelo</h2>
-                <div>
-                        rajaa näytettäviä: <input value={this.state.filter} onChange={this.handleFilterChange} />
-                    </div>
+                <FilterForm filter={this.state.filter} handler={this.handleFilterChange} />
                 <h3>Lisää uusi</h3>
-                <form onSubmit={this.addName}>
-                    <div>
-                        nimi: <input value={this.state.newName} onChange={this.handleNameChange} />
-                    </div>
-                    <div>
-                        numero: <input value={this.state.newNumber} onChange={this.handleNumberChange} />
-                    </div>
-                    <div>
-                        <button type="submit">lisää</button>
-                    </div>
-                </form>
+                <PersonForm name={this.state.newName} number={this.state.newNumber} nameHandler={this.handleNameChange} numberHandler={this.handleNumberChange} submitHandler={this.addName} />
                 <h3>Numerot</h3>
-                <table><tbody>
-                    {personsToShow.map(person => <tr key={person.name}><td>{person.name}</td><td>{person.number}</td></tr>)}
-                </tbody></table>
+                <Catalog persons={personsToShow} />
             </div>
         )
     }
