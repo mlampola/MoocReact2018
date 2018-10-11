@@ -13,8 +13,13 @@ class App extends Component {
   }
 
   handleFilterChange = (event) => {
-    console.log(event.target.value)
+    console.log(event.target)
     this.setState({ filter: event.target.value })
+  }
+
+  handleClick = (event) => {
+    console.log(event.target.innerText)
+    this.setState({ filter: event.target.innerText })
   }
 
   componentDidMount() {
@@ -34,7 +39,7 @@ class App extends Component {
     return (
       <div>
         <FilterForm filter={this.state.filter} handler={this.handleFilterChange} />
-         <CountryList countries={countriesToShow} />
+         <CountryList countries={countriesToShow} handler={this.handleClick}/>
       </div>
     )
   }

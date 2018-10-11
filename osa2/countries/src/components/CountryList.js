@@ -21,7 +21,7 @@ const CountryList = (props) => {
             return (
             <table>
                 <tbody>
-                    {props.countries.map(country => <tr key={country.name}><td>{country.name}</td></tr>)}
+                    {props.countries.map(country => <tr key={country.name}><td><div onClick={props.handler}>{country.name}</div></td></tr>)}
                 </tbody>
             </table>
         )
