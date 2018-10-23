@@ -20,7 +20,13 @@ class App extends React.Component {
         console.log('nappia painettu')
 
         if (!this.state.persons.find(person => person.name === this.state.newName)) {
-            const persons = this.state.persons.concat({ name: this.state.newName, number: this.state.newNumber })
+            const person = { name: this.state.newName, number: this.state.newNumber }
+            const persons = this.state.persons.concat(person)
+
+            axios.post('http://localhost:3001/persons', person)
+            .then(response => {
+              console.log(response)
+            })        
 
             this.setState({
                 persons: persons,
