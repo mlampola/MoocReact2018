@@ -2,7 +2,7 @@ import React from 'react';
 import FilterForm from './components/FilterForm'
 import PersonForm from './components/PersonForm'
 import Catalog from './components/Catalog'
-import axios from 'axios'
+import personService from './services/persons'
 
 class App extends React.Component {
     constructor(props) {
@@ -21,19 +21,18 @@ class App extends React.Component {
 
         if (!this.state.persons.find(person => person.name === this.state.newName)) {
             const person = { name: this.state.newName, number: this.state.newNumber }
-            const persons = this.state.persons.concat(person)
 
-            axios.post('http://localhost:3001/persons', person)
-            .then(response => {
-              console.log(response)
-            })        
+            personService
+                .create(person)
+                .then(response => {
+                    console.log(response)
+                    this.setState({
+                        persons: this.state.persons.concat(response.data),
+                        newName: '',
+                        newNumber: ''
+                    })
+                })        
 
-            this.setState({
-                persons: persons,
-                newName: '',
-                newNumber: ''
-
-            })
         } else {
             console.log('henkilö ' + this.state.newName + ' on jo olemassa')
             this.setState({
@@ -61,8 +60,8 @@ class App extends React.Component {
 
     componentDidMount() {
         console.log('did mount')
-        axios
-            .get('http://localhost:3001/persons')
+        personService
+            .getAll()
             .then(response => {
                 console.log('promise fulfilled')
                 this.setState({ persons: response.data })
