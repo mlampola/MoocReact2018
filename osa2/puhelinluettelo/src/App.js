@@ -17,7 +17,7 @@ class App extends React.Component {
 
     addName = (event) => {
         event.preventDefault()
-        console.log('nappia painettu')
+        console.log('Lisää-nappia painettu')
 
         if (!this.state.persons.find(person => person.name === this.state.newName)) {
             const person = { name: this.state.newName, number: this.state.newNumber }
@@ -31,7 +31,7 @@ class App extends React.Component {
                         newName: '',
                         newNumber: ''
                     })
-                })        
+                })
 
         } else {
             console.log('henkilö ' + this.state.newName + ' on jo olemassa')
@@ -40,6 +40,31 @@ class App extends React.Component {
                 newNumber: ''
 
             })
+        }
+    }
+
+    deleteName = (event) => {
+        event.preventDefault()
+        const id = Number(event.target.id)
+        const person = this.state.persons.find(person => person.id === id)
+        console.log('Poista-nappia painettu ', id, ' ', person.name)
+        const doDelete = window.confirm(`Poistetaanko ${person.name}?`);
+        console.log(doDelete)
+
+        if (doDelete) {
+            personService
+                .remove(id)
+                .then(response => {
+                    console.log(response)
+                    const persons = this.state.persons.filter(n => n.id !== id)
+                    console.log(persons)
+
+                    this.setState({
+                        persons: persons,
+                        newName: '',
+                        newNumber: ''
+                    })
+                })
         }
     }
 
@@ -81,7 +106,7 @@ class App extends React.Component {
                 <h3>Lisää uusi</h3>
                 <PersonForm name={this.state.newName} number={this.state.newNumber} nameHandler={this.handleNameChange} numberHandler={this.handleNumberChange} submitHandler={this.addName} />
                 <h3>Numerot</h3>
-                <Catalog persons={personsToShow} />
+                <Catalog persons={personsToShow} deleteHandler={this.deleteName} />
             </div>
         )
     }
