@@ -2,7 +2,9 @@ import React from 'react';
 import FilterForm from './components/FilterForm'
 import PersonForm from './components/PersonForm'
 import Catalog from './components/Catalog'
+import Notification from './components/Notification'
 import personService from './services/persons'
+import './index.css'
 
 class App extends React.Component {
     constructor(props) {
@@ -11,7 +13,8 @@ class App extends React.Component {
             persons: [],
             newName: '',
             newNumber: '',
-            filter: ''
+            filter: '',
+            message: null
         }
     }
 
@@ -30,8 +33,12 @@ class App extends React.Component {
                     this.setState({
                         persons: this.state.persons.concat(response.data),
                         newName: '',
-                        newNumber: ''
+                        newNumber: '',
+                        message: `lisättiin ${response.data.name}`
                     })
+                    setTimeout(() => {
+                        this.setState({ message: null })
+                    }, 5000)
                 })
 
         } else {
@@ -49,8 +56,12 @@ class App extends React.Component {
                         this.setState({
                             persons: this.state.persons.map(p => p.id !== changedPerson.id ? p : response.data),
                             newName: '',
-                            newNumber: ''
+                            newNumber: '',
+                            message: `päivitettiin ${response.data.name}`
                         })
+                        setTimeout(() => {
+                            this.setState({ message: null })
+                        }, 5000)
                     })
             } else {
                 this.setState({
@@ -81,8 +92,12 @@ class App extends React.Component {
                     this.setState({
                         persons: persons,
                         newName: '',
-                        newNumber: ''
+                        newNumber: '',
+                        message: `poistettiin ${person.name}`
                     })
+                    setTimeout(() => {
+                        this.setState({ message: null })
+                    }, 5000)
                 })
         }
     }
@@ -121,6 +136,7 @@ class App extends React.Component {
         return (
             <div>
                 <h2>Puhelinluettelo</h2>
+                <Notification message={this.state.message} />
                 <FilterForm filter={this.state.filter} handler={this.handleFilterChange} />
                 <h3>Lisää uusi</h3>
                 <PersonForm name={this.state.newName} number={this.state.newNumber} nameHandler={this.handleNameChange} numberHandler={this.handleNumberChange} submitHandler={this.addName} />
