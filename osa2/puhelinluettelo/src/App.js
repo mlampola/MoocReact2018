@@ -18,6 +18,23 @@ class App extends React.Component {
         }
     }
 
+    savePerson = (person) => {
+        personService
+            .create(person)
+            .then(response => {
+                console.log(response)
+                this.setState({
+                    persons: this.state.persons.concat(response.data),
+                    newName: '',
+                    newNumber: '',
+                    message: `lisättiin ${response.data.name}`
+                })
+                setTimeout(() => {
+                    this.setState({ message: null })
+                }, 5000)
+            })
+    }
+
     addName = (event) => {
         event.preventDefault()
         console.log('Lisää-nappia painettu')
@@ -25,22 +42,7 @@ class App extends React.Component {
 
         if (!person) {
             const newPerson = { name: this.state.newName, number: this.state.newNumber }
-
-            personService
-                .create(newPerson)
-                .then(response => {
-                    console.log(response)
-                    this.setState({
-                        persons: this.state.persons.concat(response.data),
-                        newName: '',
-                        newNumber: '',
-                        message: `lisättiin ${response.data.name}`
-                    })
-                    setTimeout(() => {
-                        this.setState({ message: null })
-                    }, 5000)
-                })
-
+            this.savePerson(newPerson)
         } else {
             console.log(`henkilö ${this.state.newName} on jo olemassa`)
             const doUpdate = window.confirm(`${this.state.newName} on jo luettelossa, korvataanko vanha numero uudella?`);
@@ -62,6 +64,15 @@ class App extends React.Component {
                         setTimeout(() => {
                             this.setState({ message: null })
                         }, 5000)
+                    })
+                    .catch(error => {
+                        console.log('fail')
+                        // Removed elsewhere, create again
+                        const persons = this.state.persons.filter(n => n.id !== changedPerson.id)
+                        this.setState({
+                            persons: persons
+                        })
+                        this.savePerson(changedPerson)
                     })
             } else {
                 this.setState({
@@ -138,7 +149,7 @@ class App extends React.Component {
                 <h2>Puhelinluettelo</h2>
                 <Notification message={this.state.message} />
                 <FilterForm filter={this.state.filter} handler={this.handleFilterChange} />
-                <h3>Lisää uusi</h3>
+                <h3>Lisää uusi / muuta olemassaolevan numeroa</h3>
                 <PersonForm name={this.state.newName} number={this.state.newNumber} nameHandler={this.handleNameChange} numberHandler={this.handleNumberChange} submitHandler={this.addName} />
                 <h3>Numerot</h3>
                 <Catalog persons={personsToShow} deleteHandler={this.deleteName} />
