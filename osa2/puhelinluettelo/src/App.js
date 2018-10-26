@@ -18,12 +18,13 @@ class App extends React.Component {
     addName = (event) => {
         event.preventDefault()
         console.log('Lisää-nappia painettu')
+        const person = this.state.persons.find(person => person.name === this.state.newName)
 
-        if (!this.state.persons.find(person => person.name === this.state.newName)) {
-            const person = { name: this.state.newName, number: this.state.newNumber }
+        if (!person) {
+            const newPerson = { name: this.state.newName, number: this.state.newNumber }
 
             personService
-                .create(person)
+                .create(newPerson)
                 .then(response => {
                     console.log(response)
                     this.setState({
@@ -34,12 +35,30 @@ class App extends React.Component {
                 })
 
         } else {
-            console.log('henkilö ' + this.state.newName + ' on jo olemassa')
-            this.setState({
-                newName: '',
-                newNumber: ''
+            console.log(`henkilö ${this.state.newName} on jo olemassa`)
+            const doUpdate = window.confirm(`${this.state.newName} on jo luettelossa, korvataanko vanha numero uudella?`);
+            console.log(doUpdate)
 
-            })
+            if (doUpdate) {
+                const changedPerson = { ...person, number: this.state.newNumber }
+
+                personService
+                    .update(changedPerson.id, changedPerson)
+                    .then(response => {
+                        console.log(response.data)
+                        this.setState({
+                            persons: this.state.persons.map(p => p.id !== changedPerson.id ? p : response.data),
+                            newName: '',
+                            newNumber: ''
+                        })
+                    })
+            } else {
+                this.setState({
+                    newName: '',
+                    newNumber: ''
+
+                })
+            }
         }
     }
 
