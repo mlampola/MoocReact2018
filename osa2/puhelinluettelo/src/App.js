@@ -86,7 +86,7 @@ class App extends React.Component {
 
     deleteName = (event) => {
         event.preventDefault()
-        const id = Number(event.target.id)
+        const id = event.target.id
         const person = this.state.persons.find(person => person.id === id)
         console.log('Poista-nappia painettu ', id, ' ', person.name)
         const doDelete = window.confirm(`Poistetaanko ${person.name}?`);
